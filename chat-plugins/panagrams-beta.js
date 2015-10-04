@@ -2,7 +2,7 @@
  * Created by SilverTactic and panpawn
  * This is a plugin that uses the anagrams 
  * format that is dedicated to Pokemon
- * names.  Winners recieve one buck a peice.
+ * names.  Winners receive one buck a piece.
  */
 
 var session = 0;
@@ -13,8 +13,8 @@ exports.commands = {
 		if (!this.canBroadcast()) return;
 		if (room.id !== 'gamechamber') return this.errorReply("This command can only be used in the 'Game Chamber' room.");
 		return this.sendReplyBox(
-		    '<center><b><font size = 2><center>Pangram rules and commands</font></b>' +
-		    '<i><font color=gray>(By SilverTactic and panpawn)</font></i></center><br />' +
+		    '<center><b><font size = 2><center>Panagram Rules and Commands</font></b>' +
+		    '<i><font color=gray>(By SilverTactic, panpawn, and some help from Nibt)</font></i></center><br />' +
 		    '<code>/panagram [session number]</code> - Starts a game of Panagram in the room for [session number] games (Panagrams are just anagrams with Pokemon). Illegal and CAP Pokemon won\'t be selected. Must be ranked + or higher to use.<br />' + 
 		    '<code>/guessp [Pokemon]</code> - Guesses a Pokémon.<br />' + 
 		    '<code>/panagramend</code> OR <code>/endpanagram</code> - Ends the current game of Panagram.<br />' + 
@@ -23,7 +23,7 @@ exports.commands = {
 	},
 	panagrams: 'panagram',
 	panagram: function(target, room, user) {
-		if (!this.can('mute', null, room)) return this.errorReply('You must be ranked @ or higher to be able to start a game of Panagram in this room.');
+		if (!this.can('mute', null, room)) return this.errorReply('You must be ranked + or higher to be able to start a game of Panagram in this room.');
 		if (room.panagram) return this.errorReply('There is already a game of Panagram going on.');
 		if (room.id !== 'gamechamber') return this.errorReply("This command can only be used in the 'Game Chamber' room.");
 		if (!this.canTalk()) return;
