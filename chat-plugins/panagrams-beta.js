@@ -2,7 +2,7 @@
  * Created by SilverTactic and panpawn
  * This is a plugin that uses the anagrams 
  * format that is dedicated to Pokemon
- * names.  Winners recieve one buck a peice.
+ * names.  Winners receive one buck a piece.
  */
 
 var session = 0;
@@ -13,8 +13,8 @@ exports.commands = {
 		if (!this.canBroadcast()) return;
 		if (room.id !== 'gamechamber') return this.errorReply("This command can only be used in the 'Game Chamber' room.");
 		return this.sendReplyBox(
-		    '<center><b><font size = 2><center>Pangram rules and commands</font></b>' +
-		    '<i><font color=gray>(By SilverTactic and panpawn)</font></i></center><br />' +
+		    '<center><b><font size = 2><center>Panagram rules and commands</font></b>' +
+		    '<i><font color=gray>(by SilverTactic and panpawn; edits by Nibt)</font></i></center><br />' +
 		    '<code>/panagram [session number]</code> - Starts a game of Panagram in the room for [session number] games (Panagrams are just anagrams with Pokemon). Illegal and CAP Pokemon won\'t be selected. Must be ranked + or higher to use.<br />' + 
 		    '<code>/guessp [Pokemon]</code> - Guesses a Pokémon.<br />' + 
 		    '<code>/panagramend</code> OR <code>/endpanagram</code> - Ends the current game of Panagram.<br />' + 
@@ -23,7 +23,7 @@ exports.commands = {
 	},
 	panagrams: 'panagram',
 	panagram: function(target, room, user) {
-		if (!this.can('mute', null, room)) return this.errorReply('You must be ranked @ or higher to be able to start a game of Panagram in this room.');
+		if (!this.can('mute', null, room)) return this.errorReply('You must be ranked + or higher to be able to start a game of Panagrams in this room.');
 		if (room.panagram) return this.errorReply('There is already a game of Panagram going on.');
 		if (room.id !== 'gamechamber') return this.errorReply("This command can only be used in the 'Game Chamber' room.");
 		if (!this.canTalk()) return;
@@ -67,7 +67,7 @@ exports.commands = {
 			panagram = mixer(poke);
 		}
 		this.add('|html|<b><font color=' + Gold.hashColor(toId(user.name)) + '>' + Tools.escapeHTML(user.name) + '</font> has started a session of Panagrams!</b>');
-		this.add('|html|<div class = "broadcast-gold"><center><b>A game of Panagram has been started!</b> (' + session + ' remaining)<br/>' + 'The scrambled Pokémon is: <b>' + panagram + '</b><br/>' + '<font size = 1>Type in <b>/gp [Pokémon]</b> to guess the Pokémon!');
+		this.add('|html|<div class = "broadcast-gold"><center><b>A game of Panagrams have started!</b> (' + session + ' remaining)<br/>' + 'The scrambled Pokémon is: <b>' + panagram + '</b><br/>' + '<font size = 1>Type in <b>/gp [Pokémon]</b> to guess the Pokémon!');
 		room.panagram.guessed = [];
 		room.panagram.chances = 2;
 		room.panagram.answer = toId(poke);
@@ -77,7 +77,7 @@ exports.commands = {
 	guesspoke: 'guessp',
 	guessp: function(target, room, user, cmd) {
 		if (room.id !== 'gamechamber') return this.errorReply("This command can only be used in the 'Game Chamber' room.");
-		if (!room.panagram) return this.errorReply('There is no game of Panagram going on in this room.');
+		if (!room.panagram) return this.errorReply('There are no game of Panagrams going on in this room.');
 		if (!this.canTalk()) return;
 		//if (room.panagram[user.userid]) return this.errorReply("You've already guessed once!");
 		if (!target) return this.errorReply("The proper syntax is /guessp [pokemon]");
@@ -119,7 +119,7 @@ exports.commands = {
 				while (panagram == poke) {
 					panagram = mixer(poke);
 				}
-				this.add('|html|<div class = "broadcast-gold"><center><b>A game of Panagram has been started!</b> (' + session + ' remaining)<br/>' + 'The scrambled Pokémon is: <b>' + panagram + '</b><br/>' + '<font size = 1>Type in <b>/gp [Pokémon]</b> to guess the Pokémon!');
+				this.add('|html|<div class = "broadcast-gold"><center><b>A game of Panagrams have started!</b> (' + session + ' remaining)<br/>' + 'The scrambled Pokémon is: <b>' + panagram + '</b><br/>' + '<font size = 1>Type in <b>/gp [Pokémon]</b> to guess the Pokémon!');
 				room.panagram = {};
 				room.panagram.guessed = [];
 				room.panagram.chances = 2;
@@ -127,7 +127,7 @@ exports.commands = {
 				room.panagram.scrambled = panagram;
 			}
 		} else {
-			this.add('|html|<b><font color=' + Gold.hashColor(user.name) + '>' + Tools.escapeHTML(user.name) + '</b> guessed <b>' + Tools.escapeHTML(target) + '</b>, but was not the correct answer...');
+			this.add('|html|<b><font color=' + Gold.hashColor(user.name) + '>' + Tools.escapeHTML(user.name) + '</b> guessed <b>' + Tools.escapeHTML(target) + '</b>, but it was not the correct answer...');
 			room.panagram[user.userid] = toId(target);
 			room.panagram.guessed.push(toId(target));
 		}
@@ -135,7 +135,7 @@ exports.commands = {
 	panagramend: 'endpanagram',
 	endpanagram: function(target, room, user) {
 		if (room.id !== 'gamechamber') return this.errorReply("This command can only be used in the 'Game Chamber' room.");
-		if (!this.can('broadcast', null, room)) return this.errorReply('You must be ranked + or higher to be able to end a game of Panagram in this room.');
+		if (!this.can('broadcast', null, room)) return this.errorReply('You must be ranked + or higher to be able to end a game of Panagrams in this room.');
 		if (!room.panagram) return this.errorReply('There is no Panagram game going on in this room.');
 		if (!this.canTalk()) return;
 		this.add("|html|<b>The game of Panagram has been ended by <font color=" + Gold.hashColor(toId(user.name)) + ">" + Tools.escapeHTML(user.name) + "</font>.</b>");
