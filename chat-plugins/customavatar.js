@@ -126,8 +126,9 @@ exports.commands = {
 					if (targetUser) targetUser.avatar = Config.customavatars[userid];
 
 					this.sendReply(userid + "'s custom avatar has been set.");
-					//Users.messageSeniorStaff(userid+' has received a custom avatar from '+user.name);
-					Rooms.rooms.staff.add(userid+' has received a custom avatar from '+user.name);
+
+					Rooms.get('staff').add(userid+' has received a custom avatar from '+user.name);
+					Rooms.get('staff').update();
 					Users.get(userid).popup('|modal||html|<font color="red"><strong>ATTENTION!</strong></font><br /> You have received a custom avatar from <b><font color="' + Gold.hashColor(user.userid) + '">' + Tools.escapeHTML(user.name) + '</font></b>: <img src="'+avatar+'" width="80" height="80">');
 					room.update();
 				}.bind(this));
@@ -152,6 +153,7 @@ exports.commands = {
 					this.sendReply(userid + "'s custom avatar removed successfully");
 				}.bind(this));
 				break;
+
 				case 'reload':
 					if (!this.can('hotpatch')) return this.errorReply("Access denied.");
 					reloadCustomAvatars();

@@ -37,6 +37,7 @@ var commands = exports.commands = {
 		this.sendReplyBox("Server version: <b>" + CommandParser.package.version + "</b>");
 	},
 
+	/*
 	auth: 'authority',
 	stafflist: 'authority',
 	globalauth: 'authority',
@@ -65,6 +66,7 @@ var commands = exports.commands = {
 		if (!buffer.length) buffer = "This server has no global authority.";
 		connection.popup(buffer.join("\n\n"));
 	},
+	*/
 
 	me: function (target, room, user, connection) {
 		// By default, /me allows a blank message
@@ -195,17 +197,20 @@ var commands = exports.commands = {
 				var targetRoom = Rooms.search(innerTarget);
 				if (!targetRoom || targetRoom === Rooms.global) return this.errorReply('The room "' + innerTarget + '" does not exist.');
 				if (targetRoom.staffRoom && !targetUser.isStaff) return this.errorReply('User "' + this.targetUsername + '" requires global auth to join room "' + targetRoom.id + '".');
-				if (targetRoom.isPrivate === true && targetRoom.modjoin && targetRoom.auth) {
-					if (Config.groupsranking.indexOf(targetRoom.auth[targetUser.userid] || ' ') < Config.groupsranking.indexOf(targetRoom.modjoin) && !targetUser.can('bypassall')) {
-						return this.errorReply('The room "' + innerTarget + '" does not exist.');
-					}
-				}
 				if (targetRoom.modjoin) {
 					if (targetRoom.auth && (targetRoom.isPrivate === true || targetUser.group === ' ') && !(targetUser.userid in targetRoom.auth)) {
 						this.parse('/roomvoice ' + targetUser.name, false, targetRoom);
 						if (!(targetUser.userid in targetRoom.auth)) {
 							return;
 						}
+					}
+				}
+				if (targetRoom.isPrivate === true && targetRoom.modjoin && targetRoom.auth) {
+					if (!(user.userid in targetRoom.auth)) {
+						return this.errorReply('The room "' + innerTarget + '" does not exist.');
+					}
+					if (Config.groupsranking.indexOf(targetRoom.auth[targetUser.userid] || ' ') < Config.groupsranking.indexOf(targetRoom.modjoin) && !targetUser.can('bypassall')) {
+						return this.errorReply('The user "' + targetUser.name + '" does not have permission to join "' + innerTarget + '".');
 					}
 				}
 
@@ -324,8 +329,9 @@ var commands = exports.commands = {
 
 	makegroupchat: function (target, room, user, connection, cmd) {
 		if (!user.autoconfirmed) {
-			return this.errorReply("You don't have permission to make a group chat right now.");
+			return this.errorReply("You must be autoconfirmed to make a groupchat.");
 		}
+		//if (!this.can('makegroupchat')) return false;
 		if (target.length > 64) return this.errorReply("Title must be under 32 characters long.");
 		var targets = target.split(',', 2);
 
@@ -365,7 +371,7 @@ var commands = exports.commands = {
 		// registered chatrooms
 		title = title;
 
-		if (ResourceMonitor.countGroupChat(connection.ip)) {
+		if (Monitor.countGroupChat(connection.ip)) {
 			this.errorReply("Due to high load, you are limited to creating 4 group chats every hour.");
 			return;
 		}
@@ -595,6 +601,40 @@ var commands = exports.commands = {
 		}
 	},
 
+	stafftopic: 'staffintro',
+	staffintro: function (target, room, user) {
+		if (!target) {
+			if (!this.can('mute', null, room)) return false;
+			if (!room.staffMessage) return this.sendReply("This room does not have a staff introduction set.");
+			this.sendReply('|raw|<div class="infobox">' + room.staffMessage + '</div>');
+			if (user.can('ban', null, room)) {
+				this.sendReply('Source:');
+				this.sendReplyBox('<code>/staffintro ' + Tools.escapeHTML(room.staffMessage) + '</code>');
+			}
+			return;
+		}
+		if (!this.can('ban', null, room)) return false;
+		target = target.trim();
+		if (!this.canHTML(target)) return;
+		if (!/</.test(target)) {
+			// not HTML, do some simple URL linking
+			var re = /(https?:\/\/(([-\w\.]+)+(:\d+)?(\/([\w/_\.]*(\?\S+)?)?)?))/g;
+			target = target.replace(re, '<a href="$1">$1</a>');
+		}
+		if (target.substr(0, 12) === '/staffintro ') target = target.substr(12);
+
+		room.staffMessage = target;
+		this.sendReply("(The staff introduction has been changed to:)");
+		this.sendReply('|raw|<div class="infobox">' + target + '</div>');
+
+		this.privateModCommand("(" + user.name + " changed the staffintro.)");
+
+		if (room.chatRoomData) {
+			room.chatRoomData.staffMessage = room.staffMessage;
+			Rooms.global.writeChatRoomData();
+		}
+	},
+
 	roomalias: function (target, room, user) {
 		if (!target) {
 			if (!this.canBroadcast()) return;
@@ -656,7 +696,7 @@ var commands = exports.commands = {
 		room.onUpdateIdentity(targetUser);
 		Rooms.global.writeChatRoomData();
 	},
-	roomownerhelp: ["/roomowner [username] - Appoints [username] as a room owner. Removes official status. Requires: ~"],
+	roomownerhelp: ["/roomowner [username] - Appoints [username] as a room owner. Removes official status. Requires: & ~"],
 
     roomdeowner: 'deroomowner',
 	roomdeowner: 'deroomowner',
@@ -701,7 +741,7 @@ var commands = exports.commands = {
 			Rooms.global.writeChatRoomData();
 		}
 	},
-	deroomownerhelp: ["/roomdeowner [username] - Removes [username]'s status as a room owner. Requires: ~"],
+	deroomownerhelp: ["/roomdeowner [username] - Removes [username]'s status as a room owner. Requires: & ~"],
 
 	roomdemote: 'roompromote',
 	roompromote: function (target, room, user, connection, cmd) {
@@ -759,7 +799,7 @@ var commands = exports.commands = {
 			room.auth[userid] = nextGroup;
 		}
 
-		if (Config.groups[nextGroup].rank < Config.groups[currentGroup].rank) {
+		if (nextGroup in Config.groups && currentGroup in Config.groups && Config.groups[nextGroup].rank < Config.groups[currentGroup].rank) {
 			this.privateModCommand("(" + name + " was demoted to Room " + groupName + " by " + user.name + ".)");
 			if (targetUser && Rooms.rooms[room.id].users[targetUser.userid]) targetUser.popup("You were demoted to Room " + groupName + " by " + user.name + ".");
 		} else if (nextGroup === '#') {
@@ -800,6 +840,8 @@ var commands = exports.commands = {
 			connection.popup("The room '" + targetRoom.title + "' has no auth.");
 			return;
 		}
+		var roomfounder = (targetRoom.founder ? "Room Founder:\n" + targetRoom.founder : false);
+		if (roomfounder) buffer.unshift(roomfounder);
 		if (targetRoom !== room) buffer.unshift("" + targetRoom.title + " room auth:");
 		connection.popup(buffer.join("\n\n"));
 	},
@@ -891,13 +933,15 @@ var commands = exports.commands = {
 		this.addModCommand("" + targetUser.name + " was banned from room " + room.id + " by " + user.name + "." + (target ? " (" + target + ")" : ""));
 		var acAccount = (targetUser.autoconfirmed !== targetUser.userid && targetUser.autoconfirmed);
 		var alts = room.roomBan(targetUser);
-		if (alts.length) {
-			this.privateModCommand("(" + targetUser.name + "'s " + (acAccount ? " ac account: " + acAccount + ", " : "") + "roombanned alts: " + alts.join(", ") + ")");
-			for (var i = 0; i < alts.length; ++i) {
-				this.add('|unlink|' + toId(alts[i]));
+		if (!(room.isPersonal || room.isPrivate === true) || user.can('alts', targetUser)) {
+			if (alts.length) {
+				this.privateModCommand("(" + targetUser.name + "'s " + (acAccount ? " ac account: " + acAccount + ", " : "") + "roombanned alts: " + alts.join(", ") + ")");
+				for (var i = 0; i < alts.length; ++i) {
+					this.add('|unlink|' + toId(alts[i]));
+				}
+			} else if (acAccount) {
+				this.privateModCommand("(" + targetUser.name + "'s ac account: " + acAccount + ")");
 			}
-		} else if (acAccount) {
-			this.privateModCommand("(" + targetUser.name + "'s ac account: " + acAccount + ")");
 		}
 		this.add('|unlink|' + this.getLastIdOf(targetUser));
 	},
@@ -1093,7 +1137,7 @@ var commands = exports.commands = {
 
 		if (targetUser.confirmed) {
 			var from = targetUser.deconfirm();
-			ResourceMonitor.log("[CrisisMonitor] " + targetUser.name + " was locked by " + user.name + " and demoted from " + from.join(", ") + ".");
+			Monitor.log("[CrisisMonitor] " + targetUser.name + " was locked by " + user.name + " and demoted from " + from.join(", ") + ".");
 		}
 
 		// Destroy personal rooms of the locked user.
@@ -1168,7 +1212,7 @@ var commands = exports.commands = {
 
 		if (targetUser.confirmed) {
 			var from = targetUser.deconfirm();
-			ResourceMonitor.log("[CrisisMonitor] " + targetUser.name + " was banned by " + user.name + " and demoted from " + from.join(", ") + ".");
+			Monitor.log("[CrisisMonitor] " + targetUser.name + " was banned by " + user.name + " and demoted from " + from.join(", ") + ".");
 		}
 
 		// Destroy personal rooms of the banned user.
@@ -1226,6 +1270,15 @@ var commands = exports.commands = {
 
 	unbanall: function (target, room, user) {
 		if (!this.can('rangeban')) return false;
+		if (!target) {
+			user.lastCommand = '/unbanall';
+			this.errorReply("THIS WILL UNBAN AND UNLOCK ALL USERS.");
+			this.errorReply("To confirm, use: /unbanall confirm");
+			return;
+		}
+		if (user.lastCommand !== '/unbanall' || target !== 'confirm') {
+			return this.parse('/help unbanall');
+		}
 		// we have to do this the hard way since it's no longer a global
 		var punishKeys = ['bannedIps', 'bannedUsers', 'lockedIps', 'lockedUsers', 'lockedRanges', 'rangeLockedUsers'];
 		for (var i = 0; i < punishKeys.length; i++) {
@@ -1235,6 +1288,35 @@ var commands = exports.commands = {
 		this.addModCommand("All bans and locks have been lifted by " + user.name + ".");
 	},
 	unbanallhelp: ["/unbanall - Unban all IP addresses. Requires: & ~"],
+
+	deroomvoiceall: function (target, room, user) {
+		if (!this.can('editroom', null, room)) return false;
+		if (!room.auth) return this.errorReply("Room does not have roomauth.");
+		if (!target) {
+			user.lastCommand = '/deroomvoiceall';
+			this.errorReply("THIS WILL DEROOMVOICE ALL ROOMVOICED USERS.");
+			this.errorReply("To confirm, use: /deroomvoiceall confirm");
+			return;
+		}
+		if (user.lastCommand !== '/deroomvoiceall' || target !== 'confirm') {
+			return this.parse('/help deroomvoiceall');
+		}
+		var count = 0;
+		for (var userid in room.auth) {
+			if (room.auth[userid] === '+') {
+				delete room.auth[userid];
+				count++;
+			}
+		}
+		if (!count) {
+			return this.sendReply("(This room has zero roomvoices)");
+		}
+		if (room.chatRoomData) {
+			Rooms.global.writeChatRoomData();
+		}
+		this.addModCommand("All " + count + " roomvoices have been cleared by " + user.name + ".");
+	},
+	deroomvoiceallhelp: ["/deroomvoiceall - Devoice all roomvoiced users. Requires: # & ~"],
 
 	banip: function (target, room, user) {
 		target = target.trim();
@@ -1508,7 +1590,7 @@ var commands = exports.commands = {
 			if (this.targetUser) {
 				return this.errorReply("User has already changed their name to '" + this.targetUser.name + "'.");
 			}
-			return this.sendReply("User '" + target + "' not found.");
+			return this.errorReply("User '" + target + "' not found.");
 		}
 		if (!this.can('forcerename', targetUser)) return false;
 
@@ -1517,9 +1599,38 @@ var commands = exports.commands = {
 		Rooms.global.cancelSearch(targetUser);
 		targetUser.resetName();
 		targetUser.send("|nametaken||" + user.name + " considers your name inappropriate" + (reason ? ": " + reason : "."));
-		return true;
+		//return true;
 	},
 	forcerenamehelp: ["/forcerename OR /fr [username], [reason] - Forcibly change a user's name and shows them the [reason]. Requires: % @ & ~"],
+
+	hideuser: 'hidetext',
+	hidetext: function (target, room, user) {
+		if (!target) return this.parse('/help hidetext');
+
+		var reason = this.splitTarget(target);
+		var targetUser = this.targetUser;
+		var name = this.targetUsername;
+		if (!targetUser) return this.errorReply("User '" + name + "' does not exist.");
+		var userid = this.getLastIdOf(targetUser);
+		var hidetype = '';
+		if (!user.can('lock', targetUser) && !user.can('ban', targetUser, room)) {
+			this.errorReply("/hidetext - Access denied.");
+			return false;
+		}
+
+		if (targetUser.locked || Users.checkBanned(targetUser.latestIp)) {
+			hidetype = 'hide|';
+		} else if ((room.bannedUsers[toId(name)] && room.bannedIps[targetUser.latestIp]) || user.can('rangeban')) {
+			hidetype = 'roomhide|';
+		} else {
+			return this.errorReply("User '" + name + "' is not banned from this room or locked.");
+		}
+
+		this.addModCommand("" + targetUser.name + "'s messages were cleared from room " + room.id + " by " + user.name + ".");
+		this.add('|unlink|' + hidetype + userid);
+		if (userid !== toId(this.inputUsername)) this.add('|unlink|' + hidetype + toId(this.inputUsername));
+	},
+	hidetexthelp: ["/hidetext [username] - Removes a locked or banned user's messages from chat (includes users banned from the room). Requires: % (global only), @ # & ~"],
 
 	modlog: function (target, room, user, connection) {
 		var lines = 0;
@@ -1535,10 +1646,6 @@ var commands = exports.commands = {
 			var targets = target.split(',');
 			target = targets[1].trim();
 			roomId = toId(targets[0]) || room.id;
-		}
-
-		if (room.id.startsWith('battle-') || room.id.startsWith('groupchat-')) {
-			return this.errorReply("Battles and groupchats do not have modlogs.");
 		}
 
 		// Let's check the number of lines to retrieve or if it's a word instead
@@ -1560,6 +1667,8 @@ var commands = exports.commands = {
 			for (var i = 0; i < fileList.length; ++i) {
 				filename += path.normalize(__dirname + '/' + logPath + fileList[i]) + ' ';
 			}
+		} else if (roomId.startsWith('battle-') || roomId.startsWith('groupchat-')) {
+			return this.errorReply("Battles and groupchats do not have modlogs.");
 		} else {
 			if (!this.can('modlog', null, Rooms.get(roomId))) return;
 			roomNames = "the room " + roomId;
@@ -2377,7 +2486,7 @@ var commands = exports.commands = {
 	},
 
 	vtm: function (target, room, user, connection) {
-		if (ResourceMonitor.countPrepBattle(connection.ip, user.name)) {
+		if (Monitor.countPrepBattle(connection.ip, user.name)) {
 			connection.popup("Due to high load, you are limited to 6 team validations every 3 minutes.");
 			return;
 		}
@@ -2404,7 +2513,7 @@ var commands = exports.commands = {
 	query: function (target, room, user, connection) {
 		// Avoid guest users to use the cmd errors to ease the app-layer attacks in emergency mode
 		var trustable = (!Config.emergency || (user.named && user.registered));
-		if (Config.emergency && ResourceMonitor.countCmd(connection.ip, user.name)) return false;
+		if (Config.emergency && Monitor.countCmd(connection.ip, user.name)) return false;
 		var spaceIndex = target.indexOf(' ');
 		var cmd = target;
 		if (spaceIndex > 0) {
@@ -2426,7 +2535,8 @@ var commands = exports.commands = {
 			for (var i in targetUser.roomCount) {
 				if (i === 'global') continue;
 				var targetRoom = Rooms.get(i);
-				if (!targetRoom || targetRoom.isPrivate) continue;
+				if (!targetRoom) continue; // shouldn't happen
+				if (targetRoom.isPrivate && (!targetRoom.battle || targetRoom.battle.lastPlayers.indexOf(user.userid) < 0)) continue;
 				var roomData = {};
 				if (targetRoom.battle) {
 					var battle = targetRoom.battle;

@@ -113,8 +113,8 @@ exports.commands = {
     terlor: function(target, room, user) {
         if (!this.canBroadcast()) return;
         this.sendReplyBox('<center><img src="http://i.imgur.com/EEcZ4J2.png" width="350"><br />' +
-            '<img src="http://i.imgur.com/bjVsAsj.png"><br />' +
-            '"Honor is in the heart, not the name." - Yasuo</center>');
+            '<img src="http://i.imgur.com/FKBw7Ri.gif"><br />' +
+            'Honor is in the heart, not the name.</center>');
     },
 
     saago: function(target, room, user) {
@@ -177,13 +177,6 @@ exports.commands = {
         this.sendReplyBox('<center><img src="http://i.imgur.com/qO72kmo.png"><br />' +
             '<img src="http://37.media.tumblr.com/cc5c32483f12ae8866fda48d084f3861/tumblr_mww5peDTd71qkwzzdo1_400.gif"><br />' +
             '<i>Play Time Is Ogre</i>');
-    },
-
-    silver: function(target, room, user) {
-        if (!this.canBroadcast()) return;
-        this.sendReplyBox('<center><img src="http://img3.wikia.nocookie.net/__cb20091211143347/sonic/images/thumb/5/5d/Super_silver_final.png/150px-Super_silver_final.png"><br />' +
-            '<img src="http://img1.wikia.nocookie.net/__cb20111024112339/sonic/images/thumb/3/34/Sonic_Channel_-_Silver_The_Hedgehog_2011.png/120px-Sonic_Channel_-_Silver_The_Hedgehog_2011.png"><br />' +
-            'Ace: Its no use!<br />');
     },
 
     gene: function(target, room, user) {

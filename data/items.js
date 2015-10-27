@@ -53,7 +53,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && user.baseTemplate.species === 'Dialga' && (move.type === 'Steel' || move.type === 'Dragon')) {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 135,
@@ -405,7 +405,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Fighting') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 241,
@@ -442,7 +442,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Dark') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 240,
@@ -561,6 +561,7 @@ exports.BattleItems = {
 			return true;
 		},
 		onDrive: 'Fire',
+		forcedForme: "Genesect-Burn",
 		num: 118,
 		gen: 5,
 		desc: "Holder's Techno Blast is Fire type."
@@ -605,7 +606,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Fire') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 249,
@@ -749,6 +750,7 @@ exports.BattleItems = {
 			return true;
 		},
 		onDrive: 'Ice',
+		forcedForme: "Genesect-Chill",
 		num: 119,
 		gen: 5,
 		desc: "Holder's Techno Blast is Ice type."
@@ -1075,6 +1077,7 @@ exports.BattleItems = {
 			return true;
 		},
 		onDrive: 'Water',
+		forcedForme: "Genesect-Douse",
 		num: 116,
 		gen: 5,
 		desc: "Holder's Techno Blast is Water type."
@@ -1087,7 +1090,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Dragon') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -1096,6 +1099,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Dragon",
 		num: 311,
 		gen: 4,
 		desc: "Holder's Dragon-type attacks have 1.2x power. Judgment is Dragon type."
@@ -1110,7 +1114,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Dragon') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 250,
@@ -1144,7 +1148,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Dark') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -1153,6 +1157,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Dark",
 		num: 312,
 		gen: 4,
 		desc: "Holder's Dark-type attacks have 1.2x power. Judgment is Dark type."
@@ -1194,7 +1199,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Ground') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -1203,6 +1208,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Ground",
 		num: 305,
 		gen: 4,
 		desc: "Holder's Ground-type attacks have 1.2x power. Judgment is Ground type."
@@ -1324,7 +1330,7 @@ exports.BattleItems = {
 		},
 		onModifyDamage: function (damage, source, target, move) {
 			if (move && move.typeMod > 0) {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 268,
@@ -1431,7 +1437,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Fighting') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -1440,6 +1446,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Fighting",
 		num: 303,
 		gen: 4,
 		desc: "Holder's Fighting-type attacks have 1.2x power. Judgment is Fighting type."
@@ -1469,7 +1476,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Fire') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -1478,6 +1485,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Fire",
 		num: 298,
 		gen: 4,
 		desc: "Holder's Fire-type attacks have 1.2x power. Judgment is Fire type."
@@ -1746,7 +1754,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (user.baseTemplate.num === 487 && (move.type === 'Ghost' || move.type === 'Dragon')) {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -1755,6 +1763,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Giratina-Origin",
 		num: 112,
 		gen: 4,
 		desc: "If holder is a Giratina, its Ghost- and Dragon-type attacks have 1.2x power."
@@ -1824,7 +1833,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Rock') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 238,
@@ -1964,7 +1973,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Ice') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -1973,6 +1982,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Ice",
 		num: 302,
 		gen: 4,
 		desc: "Holder's Ice-type attacks have 1.2x power. Judgment is Ice type."
@@ -1996,7 +2006,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Bug') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -2005,6 +2015,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Bug",
 		num: 308,
 		gen: 4,
 		desc: "Holder's Bug-type attacks have 1.2x power. Judgment is Bug type."
@@ -2038,7 +2049,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Steel') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -2047,6 +2058,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Steel",
 		num: 313,
 		gen: 4,
 		desc: "Holder's Steel-type attacks have 1.2x power. Judgment is Steel type."
@@ -2375,7 +2387,7 @@ exports.BattleItems = {
 			basePower: 30
 		},
 		onModifyDamage: function (damage, source, target, move) {
-			return this.chainModify(1.3);
+			return this.chainModify([0x14CC, 0x1000]);
 		},
 		onAfterMoveSecondarySelf: function (source, target, move) {
 			if (source && source !== target && move && move.category !== 'Status' && !move.ohko) {
@@ -2530,7 +2542,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && user.baseTemplate.species === 'Palkia' && (move.type === 'Water' || move.type === 'Dragon')) {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 136,
@@ -2569,7 +2581,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Electric') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 242,
@@ -2693,7 +2705,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Grass') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -2702,6 +2714,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Grass",
 		num: 301,
 		gen: 4,
 		desc: "Holder's Grass-type attacks have 1.2x power. Judgment is Grass type."
@@ -2784,7 +2797,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Steel') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 233,
@@ -2834,8 +2847,8 @@ exports.BattleItems = {
 			},
 			onModifyDamage: function (damage, source, target, move) {
 				var numConsecutive = this.effectData.numConsecutive > 5 ? 5 : this.effectData.numConsecutive;
-				var dmgMod = [1, 1.2, 1.4, 1.6, 1.8, 2];
-				return this.chainModify(dmgMod[numConsecutive]);
+				var dmgMod = [0x1000, 0x1333, 0x1666, 0x1999, 0x1CCC, 0x2000];
+				return this.chainModify([dmgMod[numConsecutive], 0x1000]);
 			}
 		},
 		num: 277,
@@ -2909,7 +2922,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Psychic') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -2918,6 +2931,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Psychic",
 		num: 307,
 		gen: 4,
 		desc: "Holder's Psychic-type attacks have 1.2x power. Judgment is Psychic type."
@@ -2932,7 +2946,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Grass') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 239,
@@ -2957,7 +2971,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.category === 'Physical') {
-				return this.chainModify(1.1);
+				return this.chainModify([0x1199, 0x1000]);
 			}
 		},
 		num: 266,
@@ -2974,7 +2988,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Water') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 243,
@@ -3020,7 +3034,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Ice') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 246,
@@ -3090,7 +3104,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Psychic') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 314,
@@ -3311,7 +3325,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Fairy') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -3320,6 +3334,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Fairy",
 		num: -6,
 		gen: 6,
 		desc: "Holder's Fairy-type attacks have 1.2x power. Judgment is Fairy type."
@@ -3346,7 +3361,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Poison') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 245,
@@ -3709,7 +3724,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Rock') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 315,
@@ -3754,7 +3769,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Grass') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 318,
@@ -3933,7 +3948,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Water') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 254,
@@ -3950,7 +3965,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move && move.type === 'Flying') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 244,
@@ -4014,6 +4029,7 @@ exports.BattleItems = {
 			return true;
 		},
 		onDrive: 'Electric',
+		forcedForme: "Genesect-Shock",
 		num: 117,
 		gen: 5,
 		desc: "Holder's Techno Blast is Electric type."
@@ -4050,7 +4066,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Normal') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 251,
@@ -4067,7 +4083,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Bug') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 222,
@@ -4117,7 +4133,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Flying') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -4126,6 +4142,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Flying",
 		num: 306,
 		gen: 4,
 		desc: "Holder's Flying-type attacks have 1.2x power. Judgment is Flying type."
@@ -4181,7 +4198,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Ground') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 237,
@@ -4221,7 +4238,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Ghost') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 247,
@@ -4249,7 +4266,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Water') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -4258,6 +4275,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Water",
 		num: 299,
 		gen: 4,
 		desc: "Holder's Water-type attacks have 1.2x power. Judgment is Water type."
@@ -4270,7 +4288,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Ghost') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -4279,6 +4297,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Ghost",
 		num: 310,
 		gen: 4,
 		desc: "Holder's Ghost-type attacks have 1.2x power. Judgment is Ghost type."
@@ -4403,7 +4422,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Rock') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -4412,6 +4431,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Rock",
 		num: 309,
 		gen: 4,
 		desc: "Holder's Rock-type attacks have 1.2x power. Judgment is Rock type."
@@ -4515,7 +4535,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Poison') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -4524,6 +4544,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Poison",
 		num: 304,
 		gen: 4,
 		desc: "Holder's Poison-type attacks have 1.2x power. Judgment is Poison type."
@@ -4538,7 +4559,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Psychic') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 248,
@@ -4645,7 +4666,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Water') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		num: 317,
@@ -4772,7 +4793,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.category === 'Special') {
-				return this.chainModify(1.1);
+				return this.chainModify([0x1199, 0x1000]);
 			}
 		},
 		num: 267,
@@ -4809,7 +4830,7 @@ exports.BattleItems = {
 		onBasePowerPriority: 6,
 		onBasePower: function (basePower, user, target, move) {
 			if (move.type === 'Electric') {
-				return this.chainModify(1.2);
+				return this.chainModify([0x1333, 0x1000]);
 			}
 		},
 		onTakeItem: function (item, pokemon, source) {
@@ -4818,6 +4839,7 @@ exports.BattleItems = {
 			}
 			return true;
 		},
+		forcedForme: "Arceus-Electric",
 		num: 300,
 		gen: 4,
 		desc: "Holder's Electric-type attacks have 1.2x power. Judgment is Electric type."

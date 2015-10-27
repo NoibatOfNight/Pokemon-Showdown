@@ -43,7 +43,7 @@ Gold.emoticons = {
 		});
 	},
 	checkEmoteModchat: function(user, room, connection) {
-		var rank = (user.getIdentity(room).substr(0,1) === user.group ? user.getIdentity(room).substr(0,1) : user.group);
+		var rank = (user.getIdentity(room).substr(0,1) === user.group ? user.group : user.getIdentity(room).substr(0,1));
 		switch (room.emoteModChat) {
 			case undefined:
 			case false:
@@ -209,7 +209,7 @@ exports.commands = {
 			switch (toId(parts[0])) {
 
 				case 'add':
-					if (!this.can('hotpatch')) return this.errorReply("Access denied.");
+					if (!this.can('pban')) return this.errorReply("Access denied.");
 					if (!(parts[2] || parts[3])) return this.errorReply("Usage: /emote add, [emoticon], [link]");
 					var emoteName = parts[1];
 					if (Gold.emoticons.chatEmotes[emoteName]) return this.errorReply("ERROR - the emoticon: " + emoteName + " already exists.");
@@ -220,15 +220,15 @@ exports.commands = {
 					saveEmotes();
 					this.sendReply("The emoticon " + emoteName + " has been added.");
 					this.logModCommand(user.name + " added the emoticon: " + emoteName);
-					Rooms.rooms.staff.add("The emoticon " + emoteName + " was added by " + Tools.escapeHTML(user.name) + ".");
-					room.update();
+					Rooms.get('staff').add("The emoticon " + emoteName + " was added by " + Tools.escapeHTML(user.name) + ".");
+					Rooms.get('staff').update();
 					break;
 
 				case 'rem':
 				case 'remove':
 				case 'del':
 				case 'delete':
-					if (!this.can('hotpatch')) return this.errorReply("Access denied.");
+					if (!this.can('pban')) return this.errorReply("Access denied.");
 					if (!parts[1]) return this.errorReply("/emote remove, [emoticon]");
 					emoteName = parts[1];
 					if (!Gold.emoticons.chatEmotes[emoteName]) return this.errorReply("ERROR - the emoticon: " + emoteName + " does not exist.");
@@ -237,8 +237,8 @@ exports.commands = {
 					saveEmotes();
 					this.sendReply("The emoticon " + emoteName + " has been removed.");
 					this.logModCommand(user.name + " removed the emoticon: " + emoteName);
-					Rooms.rooms.staff.add("The emoticon " + emoteName + " was removed by " + Tools.escapeHTML(user.name) + ".");
-					room.update();
+					Rooms.get('staff').add("The emoticon " + emoteName + " was removed by " + Tools.escapeHTML(user.name) + ".");
+					Rooms.get('staff').update();
 					break;
 
 				case 'list':
@@ -303,6 +303,13 @@ exports.commands = {
 							return this.sendReply("Emoticon moderated chat is currently set to: " + status);
 							break;
 					}
+					break;
+
+				case 'reload':
+				case 'hotpatch':
+					if (!this.can('hotpatch')) return false;
+					loadEmotes();
+					this.privateModCommand("(" + user.name + " has reloaded all emoticons on the server.)");
 					break;
 
 				case 'help':
